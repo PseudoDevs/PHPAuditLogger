@@ -1,0 +1,22 @@
+{
+    "name": "iamjohndev/audit-logger",
+    "description": "Audit Logger is a simple PHP class that allows you to log user interactions in your application.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+      "php": "^8.0"
+    },
+    "authors": [
+      {
+        "name": "John Lester Legaspi",
+        "email": "mail@iamjohndev.fun"
+      }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+      "psr-4": {
+        "iamjohndev\\": "src/"
+      }
+    }
+  }
+  
