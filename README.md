@@ -17,12 +17,6 @@ AuditLogger::setLogDriver('file');
 $dbConnection = // Your database connection here
 AuditLogger::setDbConnection($dbConnection);
 
-// Set the log formatter (optional)
-AuditLogger::setLogFormatter(function($userId, $action) {
-    // Your custom log formatting logic here
-    return "User ID: $userId performed action: $action";
-});
-
 // Log user interaction
 $userId = 123;
 $action = 'login';
