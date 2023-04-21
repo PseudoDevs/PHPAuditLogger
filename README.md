@@ -59,8 +59,8 @@ Audit Logger is released under the MIT License.
 ## Contribution
 If you would like to contribute to Audit Logger, please open an issue or submit a pull request on the GitHub repository.
 
-Credits
-Audit Logger is developed and maintained by John Dev.
+## Credits
+**Audit Logger** is developed and maintained by **IamJohnDev.**
 
 ## Disclaimer
 Audit Logger is provided as-is and is not responsible for any misuse or damages caused by the use of this library. Please use it responsibly and follow best practices for logging user interactions in your application.
