@@ -24,7 +24,7 @@ AuditLogger::log($userId, $action);
 
 // Retrieve all logs
 $logs = AuditLogger::getAllLogs();
-echo $logs; // Display all logs
+print_r($logs); // Display all logs
 
 // Clear all logs
 AuditLogger::clearLogs();
