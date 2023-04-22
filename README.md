@@ -33,7 +33,7 @@ AuditLogger::clearLogs();
 ## Configuration
 Audit Logger provides three configuration methods:
 
-- **setLogDriver($driver): **Set the log driver to either 'file' or 'database' (required).
+- **setLogDriver($driver):** Set the log driver to either 'file' or 'database' (required).
 - **setDbConnection($dbConnection):** Set the database connection (required if using 'database' log driver).
 - **setLogFormatter($logFormatter):** Set a custom log formatter as a callback function (optional).
 
