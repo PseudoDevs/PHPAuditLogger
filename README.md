@@ -1,60 +1,86 @@
-# Audit Logger
+# AuditLogger
+
 Audit Logger is a simple PHP class that allows you to log user interactions in your application. You can configure the logging driver (file or database), database connection, and log formatter according to your needs.
 
 ## Installation
 You can install Audit Logger using Composer by running the following command:
 
-`composer require iamjohndev/audit-logger:dev-main`
+```bash
+composer require iamjohndev/audit-logger
+```
+
+Replace your-vendor-name with your desired vendor name and your-package-name with the desired package name.
 
 ## Usage
+Include the Composer autoloader in your PHP files where you want to use the AuditLogger class:
+
+`require_once 'vendor/autoload.php';
+`
+
+Set the log storage driver and the database connection (if using the database driver) before using the AuditLogger:
+
 ```php
 use iamjohndev\AuditLogger;
 
-// Set the log driver (either 'file' or 'database')
-AuditLogger::setLogDriver('file');
+// Set the log storage driver
+AuditLogger::setLogDriver('database');
 
-// Set the database connection (if using 'database' log driver)
-$dbConnection = // Your database connection here
+// Set the database connection
+$dbConnection = new mysqli('localhost', 'username', 'password', 'database_name');
 AuditLogger::setDbConnection($dbConnection);
-
-// Log user interaction
-$userId = 123;
-$action = 'login';
-AuditLogger::log($userId, $action);
-
-// Retrieve all logs
-$logs = AuditLogger::getAllLogs();
-print_r($logs); // Display all logs
-
-// Clear all logs
-AuditLogger::clearLogs();
 ```
 
-## Configuration
-Audit Logger provides three configuration methods:
+Set the log formatter (optional) if you want to customize the log entry format:
 
-- **setLogDriver($driver):** Set the log driver to either 'file' or 'database' (required).
-- **setDbConnection($dbConnection):** Set the database connection (required if using 'database' log driver).
-- **setLogFormatter($logFormatter):** Set a custom log formatter as a callback function (optional).
+```php
+AuditLogger::setLogFormatter(function($userId, $action) {
+    // Custom log formatting logic
+    return "User ID: $userId | Action: $action";
+});
 
+```
 
-## Methods
-- **log($userId, $action):** Log user interaction with a given user ID and action.
-- **getAllLogs():** Retrieve all logs from the configured storage medium (file or database).
-- **clearLogs()**: Clear all logs from the configured storage medium.
+Start logging user interactions by calling the **log** method:
+```php
+// Log user interaction
+$userId = 123;
+$action = 'edit';
+AuditLogger::log($userId, $action);
 
+```
 
-## Customization
-You can customize the log formatter callback function to format the log entry string according to your desired format. By default, Audit Logger uses a simple log entry format of "User ID: {userId} performed action: {action}", but you can modify this format to suit your needs.
+Retrieve all logs using the **getAllLogs** method:
+```php
+// Get all logs
+$logs = AuditLogger::getAllLogs();
+print_r($logs);
 
-## License
-Audit Logger is released under the MIT License.
+```
 
-## Contribution
-If you would like to contribute to Audit Logger, please open an issue or submit a pull request on the GitHub repository.
+Clear all logs using the **clearLogs** method:
+```php
+// Clear all logs
+AuditLogger::clearLogs();
 
-## Credits
-**Audit Logger** is developed and maintained by **IamJohnDev.**
+```
 
-## Disclaimer
-Audit Logger is provided as-is and is not responsible for any misuse or damages caused by the use of this library. Please use it responsibly and follow best practices for logging user interactions in your application.
+### Database Configuration
+If you're using the database log storage driver, make sure to configure the database connection by setting the appropriate values for the host, username, password, and database name in the database connection code:
+
+```php
+$dbConnection = new mysqli('localhost', 'username', 'password', 'database_name');
+
+```
+
+Replace '**localhost**', '**username**', '**password**', and '**database_name**' with the actual values for your database configuration.
+
+#### Custom Logs Table (Optional)
+If you want to use a custom table name for storing logs in the database, you can set it using the setLogsTableName method:
+```php
+AuditLogger::setLogsTableName('custom_logs_table');
+```
+
+Replace '**custom_logs_table**' with the desired name for your custom logs table.
+
+### License
+This project is licensed under the MIT License. See the **LICENSE** file for details.
