@@ -7,6 +7,7 @@ class AuditLogger
     private static $logDriver;
     private static $dbConnection;
     private static $logFormatter;
+    private static $logsTableName;
 
     // Set the log storage driver
     public static function setLogDriver($driver)
@@ -26,10 +27,16 @@ class AuditLogger
         self::$logFormatter = $logFormatter;
     }
 
-    // Log user interaction
-    public static function log($userId, $action)
+    // Set the custom logs table name
+    public static function setLogsTableName($tableName)
     {
-        $log = is_callable(self::$logFormatter) ? self::$logFormatter($userId, $action) : self::generateLog($userId, $action);
+        self::$logsTableName = $tableName;
+    }
+
+    // Log user interaction
+    public static function log($userId, $action, $module)
+    {
+        $log = is_callable(self::$logFormatter) ? self::$logFormatter($userId, $action, $module) : self::generateLog($userId, $action, $module);
 
         if (self::$logDriver === 'file') {
             self::storeLogToFile($log);
@@ -41,10 +48,10 @@ class AuditLogger
     }
 
     // Generate log data
-    private static function generateLog($userId, $action)
+    private static function generateLog($userId, $action, $module)
     {
         $timestamp = date('Y-m-d H:i:s');
-        return "$timestamp | User ID: $userId | Action: $action";
+        return "$timestamp | User ID: $userId | Action: $action | Module: $module";
     }
 
     // Store log to file
@@ -75,8 +82,12 @@ class AuditLogger
             throw new \Exception('Database connection is not set.');
         }
 
-        // Code to store log to database
-        self::$dbConnection->query("INSERT INTO logs (log_entry) VALUES ('$log')");
+        if (!self::$logsTableName) {
+            throw new \Exception('Logs table name is not set.');
+        }
+
+        // Code to store log to the custom logs table in the database
+        self::$dbConnection->query("INSERT INTO ".self::$logsTableName." (log_entry) VALUES ('$log')");
         echo "Log stored to database: $log" . PHP_EOL;
     }
 
@@ -91,8 +102,12 @@ class AuditLogger
                 throw new \Exception('Database connection is not set.');
             }
 
-            // Code to retrieve logs from database
-            return self::$dbConnection->query("SELECT * FROM logs")->fetch_all();
+            if (!self::$logsTableName) {
+                throw new \Exception('Logs table name is not set.');
+            }
+
+            // Code to retrieve logs from the custom logs table in the database
+            return self::$dbConnection->query("SELECT * FROM ".self::$logsTableName)->fetch_all();
         } else {
             throw new \Exception('Invalid log driver specified.');
         }
@@ -114,12 +129,15 @@ class AuditLogger
                 throw new \Exception('Database connection is not set.');
             }
 
-            // Code to clear logs from database
-            self::$dbConnection->query("DELETE FROM logs");
+            if (!self::$logsTableName) {
+                throw new \Exception('Logs table name is not set.');
+            }
+
+            // Code to clear logs from the custom logs table in the database
+            self::$dbConnection->query("DELETE FROM ".self::$logsTableName);
             echo "Logs cleared from database." . PHP_EOL;
         } else {
             throw new \Exception('Invalid log driver specified.');
         }
     }
-
 }

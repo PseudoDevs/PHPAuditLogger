@@ -12,7 +12,7 @@
         "email": "mail@iamjohndev.fun"
       }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
       "psr-4": {
         "iamjohndev\\": "src/"
