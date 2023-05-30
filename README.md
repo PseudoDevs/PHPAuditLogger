@@ -80,6 +80,18 @@ If you want to use a custom table name for storing logs in the database, you can
 AuditLogger::setLogsTableName('custom_logs_table');
 ```
 
+```sql
+CREATE TABLE custom_logs_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    timestamp DATETIME,
+    user_id INT,
+    action VARCHAR(255),
+    module VARCHAR(255),
+    log_entry TEXT
+);
+
+```
+
 Replace '**custom_logs_table**' with the desired name for your custom logs table.
 
 ### License
